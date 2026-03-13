@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Machine Economy — Knowledge Map</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080c10;
+    --surface: #0e1420;
+    --border: #1a2535;
+    --cyan: #00e5ff;
+    --gold: #f0b429;
+    --red: #ff4560;
+    --green: #00c896;
+    --text: #e8edf5;
+    --muted: #5a6a80;
+    --card-bg: #111824;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grid noise texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,229,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.015) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 40px 80px;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    text-align: center;
+    margin-bottom: 70px;
+    animation: fadeDown 0.8s ease both;
+  }
+
+  .header-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.25em;
+    color: var(--cyan);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    opacity: 0.8;
+  }
+
+  .header h1 {
+    font-size: clamp(32px, 5vw, 54px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+
+  .header h1 span {
+    color: var(--cyan);
+  }
+
+  .header-sub {
+    margin-top: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  .header-line {
+    margin: 28px auto 0;
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  }
+
+  /* ── CORE TRINITY ── */
+  .trinity {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2px;
+    margin-bottom: 2px;
+    animation: fadeUp 0.9s 0.2s ease both;
+  }
+
+  .trinity-node {
+    position: relative;
+    padding: 32px 28px;
+    text-align: center;
+    overflow: hidden;
+    cursor: default;
+    transition: transform 0.3s ease;
+  }
+
+  .trinity-node:hover { transform: translateY(-4px); }
+
+  .trinity-node::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .trinity-node:hover::before { opacity: 1; }
+
+  .tn-ai { background: #0a1a28; border-top: 3px solid var(--cyan); }
+  .tn-ai::before { background: linear-gradient(180deg, rgba(0,229,255,0.06) 0%, transparent 100%); }
+
+  .tn-stable { background: #0a1a1a; border-top: 3px solid var(--gold); }
+  .tn-stable::before { background: linear-gradient(180deg, rgba(240,180,41,0.06) 0%, transparent 100%); }
+
+  .tn-rwa { background: #1a0a14; border-top: 3px solid var(--red); }
+  .tn-rwa::before { background: linear-gradient(180deg, rgba(255,69,96,0.06) 0%, transparent 100%); }
+
+  .tn-icon {
+    font-size: 28px;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .tn-title {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+  }
+
+  .tn-ai .tn-title { color: var(--cyan); }
+  .tn-stable .tn-title { color: var(--gold); }
+  .tn-rwa .tn-title { color: var(--red); }
+
+  .tn-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ── CONNECTOR BAR ── */
+  .connector-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 2px;
+    animation: fadeUp 0.9s 0.35s ease both;
+  }
+
+  .connector-segment {
+    flex: 1;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .cs-ai { background: rgba(0,229,255,0.04); border-right: 1px solid var(--border); }
+  .cs-mid {
+    background: rgba(255,255,255,0.02);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .cs-rwa { background: rgba(255,69,96,0.04); border-left: 1px solid var(--border); }
+
+  .flow-arrow {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid var(--cyan);
+    border-bottom: 2px solid var(--cyan);
+    transform: rotate(-45deg);
+    animation: pulse-arrow 2s infinite;
+    margin: 0 6px;
+  }
+
+  .flow-arrow.gold { border-color: var(--gold); animation-delay: 0.3s; }
+  .flow-arrow.red { border-color: var(--red); animation-delay: 0.6s; }
+
+  @keyframes pulse-arrow {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+
+  /* ── INFRASTRUCTURE LAYER ── */
+  .infra-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-bottom: 2px;
+    animation: fadeUp 0.9s 0.45s ease both;
+  }
+
+  .infra-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 24px 26px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+    cursor: default;
+  }
+
+  .infra-card:hover {
+    transform: translateY(-2px);
+  }
+
+  .infra-card.ic-cyan:hover { border-color: rgba(0,229,255,0.4); }
+  .infra-card.ic-gold:hover { border-color: rgba(240,180,41,0.4); }
+
+  .infra-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+  }
+
+  .ic-cyan::after { background: linear-gradient(90deg, transparent, var(--cyan), transparent); }
+  .ic-gold::after { background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+
+  .infra-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+    display: inline-block;
+    margin-bottom: 12px;
+  }
+
+  .ic-cyan .infra-tag { background: rgba(0,229,255,0.1); color: var(--cyan); }
+  .ic-gold .infra-tag { background: rgba(240,180,41,0.1); color: var(--gold); }
+
+  .infra-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+
+  .infra-desc {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* ── USE CASES GRID ── */
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: center;
+    padding: 20px 0 14px;
+    border-top: 1px solid var(--border);
+    margin-top: 2px;
+    animation: fadeUp 0.9s 0.55s ease both;
+  }
+
+  .usecases-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    animation: fadeUp 0.9s 0.65s ease both;
+  }
+
+  .usecase-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 22px 20px;
+    position: relative;
+    transition: all 0.3s ease;
+    cursor: default;
+    overflow: hidden;
+  }
+
+  .usecase-card:hover {
+    border-color: rgba(0,200,150,0.35);
+    transform: translateY(-3px);
+    background: #121f1a;
+  }
+
+  .usecase-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--green);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.3s ease;
+  }
+
+  .usecase-card:hover::before { transform: scaleY(1); }
+
+  .uc-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--green);
+    opacity: 0.6;
+    margin-bottom: 8px;
+    letter-spacing: 0.1em;
+  }
+
+  .uc-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+
+  .uc-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 10px;
+  }
+
+  .uc-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    padding: 2px 7px;
+    border-radius: 2px;
+    letter-spacing: 0.05em;
+  }
+
+  .tag-cyan { background: rgba(0,229,255,0.1); color: var(--cyan); }
+  .tag-gold { background: rgba(240,180,41,0.1); color: var(--gold); }
+  .tag-red { background: rgba(255,69,96,0.1); color: var(--red); }
+  .tag-green { background: rgba(0,200,150,0.1); color: var(--green); }
+
+  .uc-desc {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  /* ── COMPLIANCE ROW ── */
+  .compliance-row {
+    margin-top: 2px;
+    background: #120a08;
+    border: 1px solid rgba(255,69,96,0.2);
+    padding: 24px 28px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 24px;
+    align-items: center;
+    animation: fadeUp 0.9s 0.75s ease both;
+    transition: border-color 0.3s ease;
+  }
+
+  .compliance-row:hover { border-color: rgba(255,69,96,0.5); }
+
+  .compliance-icon {
+    font-size: 32px;
+    line-height: 1;
+  }
+
+  .compliance-content {}
+
+  .compliance-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--red);
+    background: rgba(255,69,96,0.1);
+    padding: 3px 8px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+
+  .compliance-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .compliance-desc {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  /* ── OUTLOOK ROW ── */
+  .outlook-row {
+    margin-top: 2px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    animation: fadeUp 0.9s 0.85s ease both;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 22px 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+
+  .stat-card:hover { border-color: rgba(0,229,255,0.3); transform: translateY(-2px); }
+
+  .stat-value {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--cyan);
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    line-height: 1.5;
+  }
+
+  /* ── LEGEND ── */
+  .legend {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    animation: fadeUp 0.9s 0.95s ease both;
+    flex-wrap: wrap;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  .legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Animated scan line */
+  .scanline {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    opacity: 0.3;
+    animation: scan 8s linear infinite;
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  @keyframes scan {
+    from { top: 0; }
+    to { top: 100vh; }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .trinity { grid-template-columns: 1fr; }
+    .infra-row { grid-template-columns: 1fr; }
+    .usecases-grid { grid-template-columns: 1fr 1fr; }
+    .outlook-row { grid-template-columns: 1fr; }
+    .compliance-row { grid-template-columns: 1fr; gap: 12px; }
+    .wrapper { padding: 40px 20px 60px; }
+  }
+
+  @media (max-width: 500px) {
+    .usecases-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="scanline"></div>
+
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-eyebrow">// Knowledge Architecture Map · March 2026</div>
+    <h1>The <span>Machine Economy</span></h1>
+    <div class="header-sub">AI Agents × Stablecoins × Real-World Assets</div>
+    <div class="header-line"></div>
+  </div>
+
+  <!-- TRINITY: 3 PILLARS -->
+  <div class="trinity">
+    <div class="trinity-node tn-ai">
+      <span class="tn-icon">⬡</span>
+      <div class="tn-title">AI Agents</div>
+      <div class="tn-sub">Autonomous software entities<br>with wallets, decision logic,<br>and execution capability</div>
+    </div>
+    <div class="trinity-node tn-stable">
+      <span class="tn-icon">◈</span>
+      <div class="tn-title">Stablecoins</div>
+      <div class="tn-sub">Programmable settlement rails<br>combining crypto speed<br>with fiat-denominated stability</div>
+    </div>
+    <div class="trinity-node tn-rwa">
+      <span class="tn-icon">◉</span>
+      <div class="tn-title">Real-World Assets</div>
+      <div class="tn-sub">Tokenized off-chain assets:<br>invoices, real estate, credit,<br>commodities, equities</div>
+    </div>
+  </div>
+
+  <!-- CONNECTOR -->
+  <div class="connector-row">
+    <div class="connector-segment cs-ai">
+      <span class="flow-arrow"></span>
+    </div>
+    <div class="connector-segment cs-mid">
+      converge into →
+    </div>
+    <div class="connector-segment cs-rwa">
+      <span class="flow-arrow red"></span>
+    </div>
+  </div>
+
+  <!-- INFRASTRUCTURE LAYER -->
+  <div class="infra-row">
+    <div class="infra-card ic-cyan">
+      <span class="infra-tag">Payment Primitive</span>
+      <div class="infra-title">Circle Nanopayments + x402 Protocol</div>
+      <div class="infra-desc">Gas-free USDC transfers from $0.000001 · Offchain aggregation, batched settlement · HTTP 402 payment standard — agents pay for APIs natively, no account creation required · Testnet live Mar 2026 across 12 chains</div>
+    </div>
+    <div class="infra-card ic-gold">
+      <span class="infra-tag">Productive Asset Layer</span>
+      <div class="infra-title">Tokenized Real Assets — Where Capital Actually Lives</div>
+      <div class="infra-desc">Stablecoins are the settlement rail, not the destination · Agents hold tokenized private credit, loans, and real-world instruments — capital always working · Stablecoins move value between positions · Dead capital is a design flaw, not an acceptable condition</div>
+    </div>
+  </div>
+
+  <!-- USE CASES SECTION LABEL -->
+  <div class="section-label">── Six Operational Use Cases ──</div>
+
+  <!-- USE CASES GRID -->
+  <div class="usecases-grid">
+
+    <div class="usecase-card">
+      <div class="uc-number">UC·01</div>
+      <div class="uc-title">Pay-Per-Call API Economies</div>
+      <div class="uc-tags">
+        <span class="uc-tag tag-cyan">AI Agents</span>
+        <span class="uc-tag tag-cyan">Stablecoins</span>
+      </div>
+      <div class="uc-desc">Agents pay $0.000015/call instead of flat subscriptions · x402 enables per-query billing for search, inference, compliance checks, FX data · Unviable micropayment models become standard</div>
+    </div>
+
+    <div class="usecase-card">
+      <div class="uc-number">UC·02</div>
+      <div class="uc-title">Machine-to-Machine Marketplaces</div>
+      <div class="uc-tags">
+        <span class="uc-tag tag-cyan">AI Agents</span>
+        <span class="uc-tag tag-green">Settlement</span>
+      </div>
+      <div class="uc-desc">Orchestrator agents contract specialized sub-agents · Stablecoin payment on delivery, no invoicing · Image processing, legal parsing, fraud scoring — each a micro-market between machines</div>
+    </div>
+
+    <div class="usecase-card">
+      <div class="uc-number">UC·03</div>
+      <div class="uc-title">The Autonomous CFO Stack</div>
+      <div class="uc-tags">
+        <span class="uc-tag tag-gold">Stablecoins</span>
+        <span class="uc-tag tag-red">RWA</span>
+      </div>
+      <div class="uc-desc">Treasury agent · Payments agent · Compliance agent · Risk agent — all running in parallel, all the time · Humans set strategy and risk appetite · Agents handle execution, monitoring, and reconciliation continuously</div>
+    </div>
+
+    <div class="usecase-card">
+      <div class="uc-number">UC·04</div>
+      <div class="uc-title">Stablecoin Stability Mechanisms</div>
+      <div class="uc-tags">
+        <span class="uc-tag tag-cyan">AI Agents</span>
+        <span class="uc-tag tag-gold">Stablecoins</span>
+      </div>
+      <div class="uc-desc">Real-time peg monitoring · Automated supply adjustment before de-pegging · Fraud and manipulation detection at machine speed · No single human point of failure</div>
+    </div>
+
+    <div class="usecase-card">
+      <div class="uc-number">UC·05</div>
+      <div class="uc-title">Real-World Asset Tokenization</div>
+      <div class="uc-tags">
+        <span class="uc-tag tag-red">RWA</span>
+        <span class="uc-tag tag-cyan">AI Agents</span>
+      </div>
+      <div class="uc-desc">Invoice verification + stablecoin release in minutes · Real estate yield distribution without fund admins · Commodity trade: physical verification triggers automated payment · Private credit: 10,000 loans monitored simultaneously</div>
+    </div>
+
+    <div class="usecase-card">
+      <div class="uc-number">UC·06</div>
+      <div class="uc-title">Cross-Border Settlement</div>
+      <div class="uc-tags">
+        <span class="uc-tag tag-gold">Stablecoins</span>
+        <span class="uc-tag tag-red">RWA</span>
+      </div>
+      <div class="uc-desc">$150T annual B2B market on 1970s rails · Agent finds optimal path, executes FX, confirms receipt, reconciles — what takes human teams days now runs in one automated workflow</div>
+    </div>
+
+  </div>
+
+  <!-- COMPLIANCE RISK -->
+  <div class="compliance-row">
+    <div class="compliance-icon">⚠</div>
+    <div class="compliance-content">
+      <div class="compliance-tag">Critical Gap · Active Risk</div>
+      <div class="compliance-title">The Missing Layer: Agent Identity + Compliance Infrastructure</div>
+      <div class="compliance-desc">Who is the agent? What is it authorized to do? Who is accountable when it acts? · KYC / AML / Travel Rule were written for humans — agents have no legal personhood · GENIUS Act, MiCA, VARA do not yet address autonomous transacting entities · The serious machine economy needs: Agent Identity · Agent Permissions · Compliance layer running in parallel · Full audit log for every decision · Winners won't be the most aggressive automators — they'll be the ones who combine automation with control</div>
+    </div>
+  </div>
+
+  <!-- OUTLOOK STATS -->
+  <div class="outlook-row">
+    <div class="stat-card">
+      <div class="stat-value">$30T</div>
+      <div class="stat-label">AI Agent Economy<br>Projected by 2030</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">380%</div>
+      <div class="stat-label">RWA Market Growth<br>Last 3 Years</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">$255B</div>
+      <div class="stat-label">Stablecoin Market Cap<br>USDT + USDC · Feb 2026</div>
+    </div>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="legend-item">
+      <div class="legend-dot" style="background: var(--cyan)"></div>
+      AI Agents layer
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background: var(--gold)"></div>
+      Stablecoin layer
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background: var(--red)"></div>
+      RWA layer
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background: var(--green)"></div>
+      Use case output
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background: #ff4560; opacity: 0.6"></div>
+      Risk / compliance gap
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
