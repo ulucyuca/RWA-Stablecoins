@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zamanat — Financial Ecosystem Map</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1A2340;
+    --navy-light: #243058;
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --gold-pale: #F5EDD4;
+    --white: #FFFFFF;
+    --off-white: #F7F6F2;
+    --gray: #8892A4;
+    --light-gray: #E8EAF0;
+    --teal: #0D9488;
+    --rust: #B85042;
+    --slate: #4A5568;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--navy);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--white);
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #0D1526 0%, #1A2340 50%, #243058 100%);
+    padding: 48px 60px 40px;
+    border-bottom: 1px solid rgba(201,168,76,0.3);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 70%);
+  }
+
+  .header-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 52px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+
+  .header h1 span { color: var(--gold); }
+
+  .header-sub {
+    font-size: 15px;
+    color: var(--gray);
+    font-weight: 300;
+    margin-top: 8px;
+  }
+
+  /* ARCHITECTURE LAYERS */
+  .layers-section {
+    padding: 40px 60px;
+    background: #111827;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .section-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .layers-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .layer-card {
+    border-radius: 4px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .layer-card.zamanat {
+    background: linear-gradient(135deg, #1A2340, #243058);
+    border: 1px solid rgba(201,168,76,0.4);
+  }
+
+  .layer-card.zigchain {
+    background: linear-gradient(135deg, #0D3340, #0D5C70);
+    border: 1px solid rgba(13,148,136,0.4);
+  }
+
+  .layer-card.distribution {
+    background: linear-gradient(135deg, #2D1F3D, #3D2952);
+    border: 1px solid rgba(139,92,246,0.3);
+  }
+
+  .layer-tag {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    opacity: 0.7;
+  }
+
+  .zamanat .layer-tag { color: var(--gold); }
+  .zigchain .layer-tag { color: #34D399; }
+  .distribution .layer-tag { color: #A78BFA; }
+
+  .layer-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--white);
+  }
+
+  .layer-card p {
+    font-size: 12px;
+    color: var(--gray);
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+
+  .layer-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .pill {
+    font-size: 10px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  .zamanat .pill { background: rgba(201,168,76,0.15); color: var(--gold-light); border: 1px solid rgba(201,168,76,0.2); }
+  .zigchain .pill { background: rgba(13,148,136,0.15); color: #6EE7B7; border: 1px solid rgba(13,148,136,0.2); }
+  .distribution .pill { background: rgba(139,92,246,0.15); color: #C4B5FD; border: 1px solid rgba(139,92,246,0.2); }
+
+  /* MAIN CONTENT */
+  .main {
+    padding: 40px 60px;
+    background: var(--off-white);
+  }
+
+  /* ZONE HEADERS */
+  .zone-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    margin-top: 40px;
+  }
+
+  .zone-header:first-child { margin-top: 0; }
+
+  .zone-badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 2px;
+  }
+
+  .zone-badge.sme { background: var(--navy); color: var(--gold); }
+  .zone-badge.institutional { background: #1A3A2A; color: #6EE7B7; }
+  .zone-badge.individual { background: #2D1F3D; color: #C4B5FD; }
+
+  .zone-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+
+  .zone-desc {
+    font-size: 13px;
+    color: var(--slate);
+    margin-left: auto;
+    font-style: italic;
+  }
+
+  /* PRODUCT GRID */
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+
+  .products-grid.two-col { grid-template-columns: repeat(2, 1fr); }
+  .products-grid.four-col { grid-template-columns: repeat(4, 1fr); }
+
+  .product-card {
+    background: var(--white);
+    border-radius: 4px;
+    padding: 20px;
+    border-left: 3px solid transparent;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+  }
+
+  .product-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  }
+
+  .product-card.sme-color { border-left-color: var(--gold); }
+  .product-card.institutional-color { border-left-color: var(--teal); }
+  .product-card.individual-color { border-left-color: #8B5CF6; }
+
+  .product-number {
+    position: absolute;
+    top: 16px; right: 16px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--light-gray);
+    letter-spacing: 1px;
+  }
+
+  .product-icon {
+    font-size: 22px;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .product-card h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+
+  .product-card p {
+    font-size: 11.5px;
+    color: var(--slate);
+    line-height: 1.55;
+    margin-bottom: 10px;
+  }
+
+  .product-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 8px;
+  }
+
+  .tag {
+    font-size: 9.5px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .tag.gold { background: rgba(201,168,76,0.12); color: #8B6914; }
+  .tag.teal { background: rgba(13,148,136,0.1); color: #0D7A70; }
+  .tag.purple { background: rgba(139,92,246,0.1); color: #6D28D9; }
+  .tag.rust { background: rgba(184,80,66,0.1); color: #9B3A2A; }
+  .tag.navy { background: rgba(26,35,64,0.08); color: var(--navy); }
+
+  .instrument-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--gray);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding-top: 8px;
+    border-top: 1px solid var(--light-gray);
+  }
+
+  /* DIVIDER */
+  .zone-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--light-gray), transparent);
+    margin: 8px 0 40px;
+  }
+
+  /* SUMMARY TABLE */
+  .summary-section {
+    background: var(--navy);
+    padding: 40px 60px;
+  }
+
+  .summary-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+
+  .summary-sub {
+    font-size: 13px;
+    color: var(--gray);
+    margin-bottom: 32px;
+  }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .summary-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 4px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .summary-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .summary-label {
+    font-size: 11px;
+    color: var(--gray);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* FLOW DIAGRAM */
+  .flow-section {
+    background: #111827;
+    padding: 40px 60px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .flow-grid {
+    display: grid;
+    grid-template-columns: 1fr 40px 1fr 40px 1fr;
+    align-items: center;
+    gap: 0;
+    margin-top: 24px;
+  }
+
+  .flow-node {
+    background: rgba(255,255,255,0.04);
+    border-radius: 4px;
+    padding: 24px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .flow-node.highlight {
+    background: linear-gradient(135deg, rgba(201,168,76,0.15), rgba(201,168,76,0.05));
+    border-color: rgba(201,168,76,0.3);
+  }
+
+  .flow-node h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--white);
+  }
+
+  .flow-node p {
+    font-size: 11px;
+    color: var(--gray);
+    line-height: 1.5;
+  }
+
+  .flow-arrow {
+    text-align: center;
+    font-size: 24px;
+    color: var(--gold);
+    opacity: 0.6;
+  }
+
+  .flow-node .flow-tag {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 2px;
+    margin-bottom: 10px;
+  }
+
+  .flow-tag.gold-tag { background: rgba(201,168,76,0.2); color: var(--gold); }
+  .flow-tag.teal-tag { background: rgba(13,148,136,0.2); color: #34D399; }
+  .flow-tag.purple-tag { background: rgba(139,92,246,0.2); color: #A78BFA; }
+
+  /* FOOTER */
+  .footer {
+    background: #0D1117;
+    padding: 24px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(201,168,76,0.2);
+  }
+
+  .footer-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  .footer-note {
+    font-size: 11px;
+    color: var(--gray);
+  }
+
+  @media (max-width: 1100px) {
+    .layers-grid, .products-grid, .products-grid.four-col { grid-template-columns: repeat(2, 1fr); }
+    .summary-grid { grid-template-columns: repeat(2, 1fr); }
+    .flow-grid { grid-template-columns: 1fr; }
+    .flow-arrow { transform: rotate(90deg); }
+    .header, .layers-section, .main, .summary-section, .flow-section, .footer { padding-left: 24px; padding-right: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-label">ZigChain / Zamanat Ecosystem</div>
+  <h1>The <span>Omnichain</span> Financial<br>Operating System</h1>
+  <div class="header-sub">Investment Banking · Asset Management · RWA Infrastructure · Settlement Layer · Distribution</div>
+</div>
+
+<!-- ARCHITECTURE LAYERS -->
+<div class="layers-section">
+  <div class="section-title">Three-Layer Architecture</div>
+  <div class="layers-grid">
+
+    <div class="layer-card zamanat">
+      <div class="layer-tag">Layer 1 — Product</div>
+      <h3>Zamanat</h3>
+      <p>Investment banking & asset management arm. Structures, underwrites, and packages financial products from real-world assets into investable instruments.</p>
+      <div class="layer-pills">
+        <span class="pill">RWA Structuring</span>
+        <span class="pill">Underwriting</span>
+        <span class="pill">SPV Management</span>
+        <span class="pill">Regulatory</span>
+        <span class="pill">Merchant Acquisition</span>
+      </div>
+    </div>
+
+    <div class="layer-card zigchain">
+      <div class="layer-tag">Layer 2 — Infrastructure</div>
+      <h3>ZigChain</h3>
+      <p>The settlement, execution, and tokenization layer. Mints RWA tokens, executes smart contracts, routes cross-border payments, and manages the on-chain lifecycle of every asset.</p>
+      <div class="layer-pills">
+        <span class="pill">Token Factory</span>
+        <span class="pill">USDT0 Settlement</span>
+        <span class="pill">LayerZero Bridge</span>
+        <span class="pill">WME Dashboard</span>
+        <span class="pill">Smart Contracts</span>
+      </div>
+    </div>
+
+    <div class="layer-card distribution">
+      <div class="layer-tag">Layer 3 — Distribution</div>
+      <h3>Lenders & Investors</h3>
+      <p>The capital deployment layer. Institutional lenders, asset managers, Islamic banks, sovereign funds, and retail investors who fund the products Zamanat structures.</p>
+      <div class="layer-pills">
+        <span class="pill">Institutional Lenders</span>
+        <span class="pill">Islamic Banks</span>
+        <span class="pill">Asset Managers</span>
+        <span class="pill">Nawa Finance</span>
+        <span class="pill">Retail via WME</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MAIN PRODUCT MAP -->
+<div class="main">
+
+  <!-- ZONE 1: SME -->
+  <div class="zone-header">
+    <div class="zone-badge sme">Zone 1 — SME</div>
+    <div class="zone-title">Business Liquidity Products</div>
+    <div class="zone-desc">Extracting cash from stuck assets</div>
+  </div>
+
+  <div class="products-grid">
+
+    <div class="product-card sme-color">
+      <span class="product-number">01</span>
+      <span class="product-icon">📄</span>
+      <h4>Receivables Financing</h4>
+      <p>Tokenize 90-day invoices into ONFTs. Lenders fund them instantly in USDT0. Merchant gets cash today — not in 90 days.</p>
+      <div class="product-tags">
+        <span class="tag gold">Trade Finance</span>
+        <span class="tag navy">Factoring</span>
+      </div>
+      <div class="instrument-label">Instrument: Tokenized Invoice (ONFT)</div>
+    </div>
+
+    <div class="product-card sme-color">
+      <span class="product-number">02</span>
+      <span class="product-icon">📦</span>
+      <h4>Inventory-Based Lending</h4>
+      <p>Stock sitting in a warehouse becomes collateral. Auditor (SGS/Intertek) verifies. Gold buffer (XAUt0) protects lender. USDT0 loan issued against verified stock.</p>
+      <div class="product-tags">
+        <span class="tag gold">Asset-Based Lending</span>
+        <span class="tag teal">Gold-Backed</span>
+      </div>
+      <div class="instrument-label">Instrument: Vault-Locked Collateral</div>
+    </div>
+
+    <div class="product-card sme-color">
+      <span class="product-number">03</span>
+      <span class="product-icon">🌐</span>
+      <h4>Cross-Border Settlement</h4>
+      <p>B2B payments across borders in seconds. Buyer pays in USDT0, settled instantly via LayerZero. Gas fees paid in stablecoin — no volatile tokens required.</p>
+      <div class="product-tags">
+        <span class="tag gold">Payments</span>
+        <span class="tag navy">B2B</span>
+      </div>
+      <div class="instrument-label">Instrument: USDT0 on ZigChain</div>
+    </div>
+
+    <div class="product-card sme-color">
+      <span class="product-number">04</span>
+      <span class="product-icon">🏦</span>
+      <h4>Corporate Treasury Management</h4>
+      <p>CFO dashboard showing Cash, Gold (XAUt0), and Tokenized Invoices in one view. Automated FX routing for local expenses. Fiat entry/exit via regulated ramps.</p>
+      <div class="product-tags">
+        <span class="tag gold">Treasury</span>
+        <span class="tag teal">FX Management</span>
+      </div>
+      <div class="instrument-label">Instrument: WME Corporate Dashboard</div>
+    </div>
+
+    <div class="product-card sme-color">
+      <span class="product-number">05</span>
+      <span class="product-icon">🔗</span>
+      <h4>Deep-Tier Supply Chain Finance</h4>
+      <p>The big exporter's credit line passes down to sub-suppliers automatically. When anchor buyer pays, ZigChain smart contract routes each supplier's portion directly to their wallet.</p>
+      <div class="product-tags">
+        <span class="tag gold">Supply Chain</span>
+        <span class="tag navy">Smart Contract</span>
+      </div>
+      <div class="instrument-label">Instrument: Programmable Receivable Split</div>
+    </div>
+
+    <div class="product-card sme-color">
+      <span class="product-number">06</span>
+      <span class="product-icon">🎯</span>
+      <h4>Loyalty-Backed Credit Lines</h4>
+      <p>Unredeemed corporate loyalty points (Stars, Miles) are an accounting liability. Tokenize them into a Loyalty Pool — borrow USDT0 against what was previously dead weight.</p>
+      <div class="product-tags">
+        <span class="tag gold">Liability Flip</span>
+        <span class="tag rust">Loyalty</span>
+      </div>
+      <div class="instrument-label">Instrument: Tokenized Loyalty Pool</div>
+    </div>
+
+  </div>
+
+  <div class="zone-divider"></div>
+
+  <!-- ZONE 2: INSTITUTIONAL -->
+  <div class="zone-header">
+    <div class="zone-badge institutional">Zone 2 — Institutional</div>
+    <div class="zone-title">High Finance & Capital Markets Products</div>
+    <div class="zone-desc">Unlocking frozen institutional assets</div>
+  </div>
+
+  <div class="products-grid">
+
+    <div class="product-card institutional-color">
+      <span class="product-number">07</span>
+      <span class="product-icon">📊</span>
+      <h4>Investment Portfolio Tokenization</h4>
+      <p>Bonds, equities, and funds used as collateral instead of being sold. Tokenize via Hadron by Tether. Mint a USDT0 credit line against frozen portfolio assets.</p>
+      <div class="product-tags">
+        <span class="tag teal">Securities</span>
+        <span class="tag navy">Collateral</span>
+      </div>
+      <div class="instrument-label">Instrument: Tokenized Bond / Equity</div>
+    </div>
+
+    <div class="product-card institutional-color">
+      <span class="product-number">08</span>
+      <span class="product-icon">🥇</span>
+      <h4>Gold Reserve Tokenization</h4>
+      <p>Banks and sovereign funds turn physical gold bars into XAUt0 — digital super-collateral. Real-time proof of reserves on ZigChain. Can back a new local stablecoin.</p>
+      <div class="product-tags">
+        <span class="tag teal">Sovereign</span>
+        <span class="tag gold">Gold-Backed</span>
+      </div>
+      <div class="instrument-label">Instrument: XAUt0 on ZigChain Ledger</div>
+    </div>
+
+    <div class="product-card institutional-color">
+      <span class="product-number">09</span>
+      <span class="product-icon">🛡️</span>
+      <h4>Lender Safety Net (Gold Hedge)</h4>
+      <p>Lenders in high-inflation regions require 10% XAUt0 buffer. If borrower defaults, lender claims gold. Held in Wakala (Shariah-compliant) structure — attracts Islamic institutional capital.</p>
+      <div class="product-tags">
+        <span class="tag teal">Risk Hedge</span>
+        <span class="tag navy">Islamic Finance</span>
+      </div>
+      <div class="instrument-label">Instrument: Wakala Gold Vault</div>
+    </div>
+
+    <div class="product-card institutional-color">
+      <span class="product-number">10</span>
+      <span class="product-icon">🏗️</span>
+      <h4>Fractional Fund Tokenization</h4>
+      <p>A $100M locked fund opens to thousands of investors in small pieces. Fund Manager mints Fund Tokens via Hadron. WME automates legal rules and distributes USDT0 dividends automatically.</p>
+      <div class="product-tags">
+        <span class="tag teal">Private Equity</span>
+        <span class="tag navy">Fund Management</span>
+      </div>
+      <div class="instrument-label">Instrument: Fund Token (ERC-20)</div>
+    </div>
+
+    <div class="product-card institutional-color">
+      <span class="product-number">11</span>
+      <span class="product-icon">💎</span>
+      <h4>Real Estate Tokenization</h4>
+      <p>Commercial and residential property fractionally tokenized. Rental yield distributed automatically via smart contract. Unlocks illiquid real estate into tradeable positions.</p>
+      <div class="product-tags">
+        <span class="tag teal">PropTech</span>
+        <span class="tag navy">Fractional</span>
+      </div>
+      <div class="instrument-label">Instrument: Property Token + Yield NFT</div>
+    </div>
+
+    <div class="product-card institutional-color">
+      <span class="product-number">12</span>
+      <span class="product-icon">📋</span>
+      <h4>Private Equity & Bond Liquidity</h4>
+      <p>Traditional PE and bonds are locked for years. Tokenize via Zoniqx engine. Secondary market on Oroswap DEX gives investors an exit before 10-year lock-up ends.</p>
+      <div class="product-tags">
+        <span class="tag teal">Secondary Market</span>
+        <span class="tag navy">Fixed Income</span>
+      </div>
+      <div class="instrument-label">Instrument: Tokenized PE / Bond Token</div>
+    </div>
+
+  </div>
+
+  <div class="zone-divider"></div>
+
+  <!-- ZONE 3: INDIVIDUAL -->
+  <div class="zone-header">
+    <div class="zone-badge individual">Zone 3 — Individual</div>
+    <div class="zone-title">Retail Wealth & Access Products</div>
+    <div class="zone-desc">Institutional-grade tools for everyone</div>
+  </div>
+
+  <div class="products-grid four-col">
+
+    <div class="product-card individual-color">
+      <span class="product-number">13</span>
+      <span class="product-icon">📱</span>
+      <h4>Equity & Commodity Trading</h4>
+      <p>Trade TSLA, NVDA, gold, oil from phone using USDT0 earned in Zone 1. Zero friction. AI-powered routing for best execution via Oroswap.</p>
+      <div class="product-tags">
+        <span class="tag purple">Perpetuals</span>
+        <span class="tag navy">DEX</span>
+      </div>
+      <div class="instrument-label">Instrument: Perpetual Contracts</div>
+    </div>
+
+    <div class="product-card individual-color">
+      <span class="product-number">14</span>
+      <span class="product-icon">⚖️</span>
+      <h4>Outcome Trading & Options</h4>
+      <p>HIP-4 Outcome Contracts for capped-risk hedging or insurance. No liquidation risk. Use locked gold or invoices as base for insurance contracts.</p>
+      <div class="product-tags">
+        <span class="tag purple">Options</span>
+        <span class="tag navy">Insurance</span>
+      </div>
+      <div class="instrument-label">Instrument: HIP-4 Outcome Contract</div>
+    </div>
+
+    <div class="product-card individual-color">
+      <span class="product-number">15</span>
+      <span class="product-icon">💰</span>
+      <h4>Gold-Standard Micro Savings</h4>
+      <p>Automated savings in gold using the Scudo unit (0.001 oz). Round up every transaction into gold. Makes gold spendable and saveable at micro-level.</p>
+      <div class="product-tags">
+        <span class="tag purple">Savings</span>
+        <span class="tag gold">Gold</span>
+      </div>
+      <div class="instrument-label">Instrument: Scudo / XAUt0</div>
+    </div>
+
+    <div class="product-card individual-color">
+      <span class="product-number">16</span>
+      <span class="product-icon">🔄</span>
+      <h4>Real Yield (Passive Income)</h4>
+      <p>Individuals deposit USDT0 into Nawa Finance. This funds SME loans in Zone 1. Certified "Real Yield" flows back — not speculative APY. Halal-compliant structure.</p>
+      <div class="product-tags">
+        <span class="tag purple">DeFi Yield</span>
+        <span class="tag navy">Halal</span>
+      </div>
+      <div class="instrument-label">Instrument: Nawa Finance Pool</div>
+    </div>
+
+    <div class="product-card individual-color">
+      <span class="product-number">17</span>
+      <span class="product-icon">⭐</span>
+      <h4>Liquid Loyalty Points</h4>
+      <p>Coffee points, airline miles, retail stars — live as tokens in ZIGCard wallet. Swap instantly for USDT0 on Oroswap. Use as trading margin or real-world spending.</p>
+      <div class="product-tags">
+        <span class="tag purple">Loyalty</span>
+        <span class="tag navy">Swap</span>
+      </div>
+      <div class="instrument-label">Instrument: Loyalty Token on Oroswap</div>
+    </div>
+
+    <div class="product-card individual-color">
+      <span class="product-number">18</span>
+      <span class="product-icon">🏛️</span>
+      <h4>Institutional Fund Access</h4>
+      <p>Buy a piece of a $100M institutional fund for as little as $10. Sell your Fund Token instantly on Oroswap secondary market if you need liquidity — no 10-year lock-up.</p>
+      <div class="product-tags">
+        <span class="tag purple">Democratization</span>
+        <span class="tag navy">Secondary Market</span>
+      </div>
+      <div class="instrument-label">Instrument: Fund Token on Oroswap DEX</div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- SUMMARY -->
+<div class="summary-section">
+  <div class="summary-title">The Full Picture</div>
+  <div class="summary-sub">18 financial products across 3 zones — one unified infrastructure</div>
+
+  <div class="summary-grid">
+    <div class="summary-card">
+      <div class="summary-number">6</div>
+      <div class="summary-label">SME Liquidity Products</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-number">6</div>
+      <div class="summary-label">Institutional Capital Products</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-number">6</div>
+      <div class="summary-label">Individual Wealth Products</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-number">18</div>
+      <div class="summary-label">Total Products on One Rail</div>
+    </div>
+  </div>
+</div>
+
+<!-- FLOW -->
+<div class="flow-section">
+  <div class="section-title">How Value Flows Through the System</div>
+  <div class="flow-grid">
+
+    <div class="flow-node highlight">
+      <div class="flow-tag gold-tag">Zamanat</div>
+      <h4>Structure & Underwrite</h4>
+      <p>Merchant brings receivables, inventory, or assets. Zamanat audits, structures the SPV, and packages into a financial instrument.</p>
+    </div>
+
+    <div class="flow-arrow">→</div>
+
+    <div class="flow-node">
+      <div class="flow-tag teal-tag">ZigChain</div>
+      <h4>Tokenize & Settle</h4>
+      <p>Asset minted as ONFT or token. Smart contract manages lifecycle — disbursement, repayment, yield distribution — automatically on-chain.</p>
+    </div>
+
+    <div class="flow-arrow">→</div>
+
+    <div class="flow-node">
+      <div class="flow-tag purple-tag">Distribution Layer</div>
+      <h4>Capital Deployed</h4>
+      <p>Institutional lenders, Islamic banks, asset managers, or retail investors fund the instrument. Yield flows back automatically via USDT0.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-brand">Zamanat × ZigChain</div>
+  <div class="footer-note">Omnichain Financial Operating System · CCO Briefing Document · Uluc Yuca 2025</div>
+</div>
+
+</body>
+</html>
